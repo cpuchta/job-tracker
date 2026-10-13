@@ -1,0 +1,79 @@
+# Example search profile. Copy to config/profile.yaml (git-ignored) and edit.
+#
+# Everything here is fictional. The profile is read by two things:
+#   1. the collector prompt (prompts/collector.md), which tells the agent what to look for
+#   2. `python -m jobscout evaluate`, which applies the rules deterministically
+
+candidate:
+  # Free text the agent reads to judge fit. Keep it to claims you can defend in an interview.
+  summary: >
+    Senior QA automation engineer, 8 years. Playwright and Cypress with TypeScript,
+    REST and GraphQL API testing, GitHub Actions, some Appium. Has led small QA teams.
+  cannot_claim:
+    - performance or load testing as a core skill
+    - native mobile automation (Swift/XCUITest, Kotlin/Espresso)
+
+roles:
+  - QA Engineer
+  - QA Automation Engineer
+  - SDET
+  - Software Engineer in Test
+  - Quality Engineer
+  - Quality Platform / Test Infrastructure Engineer
+  - AI Quality / LLM Evaluation Engineer
+  - QA Manager
+  - Head of Quality Engineering
+
+# Accepted seniority levels. Anything else listed on a posting blocks it.
+seniority: [senior, staff, principal, lead, manager, head, director]
+
+# Region codes in order of preference. The first one scores highest.
+eligibility: [brazil, latam, worldwide]
+
+# Fully remote is always required. When true, a posting also needs a written signal
+# of async work or flexible hours. Missing that signal does NOT block: the posting
+# goes to the "missing data" section of the digest.
+require_async_evidence: true
+
+pay:
+  usd:              # floor for USD, contractor and EOR offers (top of range is compared)
+    month: 5000
+    year: 60000
+    hour: 29
+  local:            # floor for local currency on the local contract type
+    currency: BRL
+    contract: CLT
+    month: 20000
+  fx:               # USD per unit, used for local currency on other contract types
+    BRL: 0.18
+
+# Staffing and nearshore agencies without disclosed pay are blocked outright,
+# not sent to "missing data".
+consultancy_requires_pay: true
+
+blockers:
+  flags:            # set by the agent during verification
+    - us_work_authorization
+    - performance_core
+    - salesforce_servicenow
+  required_stack:   # blocks only when listed as mandatory, never when "nice to have"
+    - swift
+    - xcuitest
+    - kotlin
+    - espresso
+
+max_per_run: 5
+
+ranking:
+  weights:          # override the defaults in jobscout/rules.py
+    published_pay: 3
+    senior_plus: 2
+  fit_signals:      # substring match on title, stack and summary, case insensitive
+    playwright: 1.5
+    typescript: 1
+    llm: 2
+    accessibility: 1
+    wcag: 1
+    fintech: 1
+    test infrastructure: 1.5
+    datadog: 0.5

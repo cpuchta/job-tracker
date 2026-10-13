@@ -1,0 +1,36 @@
+# Example search plan. Copy to config/queries.yaml (git-ignored) and edit.
+#
+# Searches go through a web search tool with `site:` filters on ATS domains, because
+# general remote job boards do not filter by keyword (see docs/lessons-learned.md).
+
+fixed:
+  - '("Staff" OR "Principal" OR "Lead") (QA OR SDET OR "Quality Engineer") remote LATAM OR Brazil site:job-boards.greenhouse.io'
+  - '("Senior" OR "Staff") SDET OR "QA Automation" remote LATAM site:jobs.lever.co'
+  - '("Senior" OR "Staff") "Quality Engineer" OR SDET remote async site:jobs.ashbyhq.com'
+  - '("Senior" OR "Staff") QA OR SDET remote LATAM site:apply.workable.com OR site:jobs.smartrecruiters.com OR site:ats.rippling.com'
+  - '"LLM" OR "AI" quality engineer evaluation testing remote site:jobs.ashbyhq.com OR site:job-boards.greenhouse.io'
+  - '("Head of Quality" OR "QA Manager" OR "Director of Quality Engineering") remote LATAM OR worldwide'
+  - '"async" OR "flexible hours" "remote-first" QA OR SDET OR "Quality Engineer" hiring worldwide'
+
+sources:
+  # Pages worth fetching every run. Keep only ones you have confirmed render and filter.
+  - https://testdevjobs.com/remote-jobs/
+
+watch_companies:
+  # Re-read the whole board of these every run. The Greenhouse public API lists every
+  # job with id, title and location, and renders far more reliably than the board page:
+  #   https://boards-api.greenhouse.io/v1/boards/<org>/jobs?content=false
+  #   https://boards-api.greenhouse.io/v1/boards/<org>/jobs/<id>
+  - name: Example Async Co
+    greenhouse_org: exampleasyncco
+
+unverifiable_hosts:
+  # JavaScript-only or login-walled. Do not WebFetch these during revalidation.
+  - linkedin.com
+  - jobs.ashbyhq.com      # tip: the /application sub-page often does render
+  - myworkdayjobs.com
+
+skip_sources:
+  # Tested and found not useful. Write down why, so nobody re-tests them.
+  - url: https://example-board.dev/remote-jobs/qa
+    reason: role filter ignored when fetched, returns the generic listing

@@ -1,0 +1,11 @@
+# Your real profile and data stay local
+config/profile.yaml
+config/queries.yaml
+data/
+*.local.*
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.DS_Store

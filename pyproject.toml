@@ -1,0 +1,15 @@
+[project]
+name = "ats-job-scout"
+version = "0.1.0"
+description = "Offline dedupe and fit-rule helpers for an AI agent that collects job postings from ATS boards"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+jobscout = "jobscout.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "jobscout"]
+addopts = "--doctest-modules --ignore=jobscout/__main__.py"
